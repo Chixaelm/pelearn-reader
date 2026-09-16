@@ -1,14 +1,14 @@
 {
-  "name": "PELearn Curriculum",
-  "short_name": "PELearn",
-  "description": "The complete PELearn private equity curriculum and casebook on one page, with numbered sections and narration.",
+  "name": "Azure for Web Apps",
+  "short_name": "Azure Apps",
+  "description": "A practical guide to building secure web apps on Microsoft Azure, with numbered sections, scenarios and narration.",
   "id": "./",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
   "orientation": "any",
   "background_color": "#f7f5ef",
-  "theme_color": "#1e5a47",
+  "theme_color": "#1b5fae",
   "icons": [
     {
       "src": "icons/icon-192.png",

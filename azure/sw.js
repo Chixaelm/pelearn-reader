@@ -1,8 +1,8 @@
 // Offline cache for the PELearn reader (GitHub Pages build).
 // The version placeholder below is replaced at build time with a hash of the page, so every deploy
 // installs a fresh worker and clears the previous cache.
-const PREFIX = 'pelearn-reader-pe-';
-const CACHE = PREFIX + '8037ccca3cee';
+const PREFIX = 'pelearn-reader-azure-';
+const CACHE = PREFIX + '9ad7b53aa3cf';
 const ASSETS = [
   './',
   './index.html',
