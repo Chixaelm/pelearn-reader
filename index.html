@@ -18795,14 +18795,39 @@ sponsors, still failed on its central assumption.</li>
     });
   }
 
+  // Keep the highlighted paragraph in step with the audio position, including after seeks.
+  function syncToTime() {
+    if (state.mode !== 'audio' || !state.playing || !state.seg || state.switching) return;
+    var t = audio.ended ? Infinity : audio.currentTime;
+    var i = state.idx;
+    var seg = state.seg;
+    while (t < seg.start - 0.1 && i > 0) {
+      var ps = segmentFor(i - 1);
+      if (!ps || ps.url !== seg.url) break;
+      i--;
+      seg = ps;
+    }
+    while (t >= seg.end - 0.04) {
+      var ns = i + 1 < blocks.length ? segmentFor(i + 1) : null;
+      if (!ns || ns.url !== seg.url || Math.abs(ns.start - seg.end) > 0.05 || isBoundary(i, i + 1)) {
+        state.idx = i;
+        state.seg = seg;
+        advance(state.token, false);
+        return;
+      }
+      i++;
+      seg = ns;
+    }
+    if (i !== state.idx) {
+      state.idx = i;
+      state.seg = seg;
+      markReading(i);
+    }
+  }
+
   if (audio) {
-    audio.addEventListener('timeupdate', function () {
-      if (state.mode !== 'audio' || !state.playing || !state.seg || state.switching) return;
-      if (audio.currentTime >= state.seg.end - 0.04) advance(state.token, true);
-    });
-    audio.addEventListener('ended', function () {
-      if (state.mode === 'audio' && state.playing && !state.switching) advance(state.token, true);
-    });
+    audio.addEventListener('timeupdate', syncToTime);
+    audio.addEventListener('ended', syncToTime);
   }
 
   // ---------------------------------------------------------------------------------------
@@ -18862,10 +18887,7 @@ sponsors, still failed on its central assumption.</li>
     var from = state.idx;
     var next = from + 1;
     if (next >= blocks.length) { stop(false); return; }
-    var a = meta[from], b = meta[next];
-    var boundary =
-      (prefs.stop === 'section' && (b.unit !== a.unit)) ||
-      (prefs.stop === 'lesson' && b.article !== a.article);
+    var boundary = isBoundary(from, next);
     state.idx = next;
     state.chunk = 0;
     if (boundary) {
@@ -18876,14 +18898,12 @@ sponsors, still failed on its central assumption.</li>
       markReading(next);
       return;
     }
-    // Continuous playback within one audio file: just move the highlight.
-    var seg = segmentFor(next);
-    if (fromAudio && seg && state.seg && seg.url === state.seg.url && Math.abs(seg.start - state.seg.end) < 0.05 && !audio.paused) {
-      state.seg = seg;
-      markReading(next);
-      return;
-    }
     playCurrent();
+  }
+
+  function isBoundary(from, next) {
+    var a = meta[from], b = meta[next];
+    return (prefs.stop === 'section' && b.unit !== a.unit) || (prefs.stop === 'lesson' && b.article !== a.article);
   }
 
   function startAt(i) {
@@ -19017,6 +19037,9 @@ sponsors, still failed on its central assumption.</li>
   }
 
   buildBlocks();
+  if (window.__PELEARN_DEBUG__) {
+    window.__PELEARN_DEBUG__.api = { blocks: blocks, meta: meta, state: state, segmentFor: segmentFor, blockHash: blockHash, getManifest: function () { return manifest; }, audio: audio };
+  }
 
   document.querySelectorAll('main .prose > h2.sec').forEach(function (h2) {
     var num = h2.querySelector('.sec-num');

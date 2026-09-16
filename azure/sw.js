@@ -2,7 +2,7 @@
 // The version placeholder below is replaced at build time with a hash of the page, so every deploy
 // installs a fresh worker and clears the previous cache.
 const PREFIX = 'pelearn-reader-azure-';
-const CACHE = PREFIX + '8c511c924f9b';
+const CACHE = PREFIX + 'd37c47c93761';
 const ASSETS = [
   './',
   './index.html',
