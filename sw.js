@@ -2,7 +2,7 @@
 // The version placeholder below is replaced at build time with a hash of the page, so every deploy
 // installs a fresh worker and clears the previous cache.
 const PREFIX = 'pelearn-reader-pe-';
-const CACHE = PREFIX + '8037ccca3cee';
+const CACHE = PREFIX + '3863c47072ea';
 const ASSETS = [
   './',
   './index.html',
@@ -42,6 +42,8 @@ function withTimeout(promise, ms) {
 self.addEventListener('fetch', (event) => {
   const req = event.request;
   if (req.method !== 'GET' || new URL(req.url).origin !== self.location.origin) return;
+  // Narration audio lives in separate pelearn-audio-* sites and is cached by the page itself.
+  if (new URL(req.url).pathname.includes('/pelearn-audio-')) return;
 
   // The page: try the network first (revalidating past GitHub's 10-minute cache) so you get
   // the latest version when online, and fall back to the saved copy when offline or slow.
