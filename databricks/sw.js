@@ -2,7 +2,7 @@
 // The version placeholder below is replaced at build time with a hash of the page, so every deploy
 // installs a fresh worker and clears the previous cache.
 const PREFIX = 'pelearn-reader-databricks-';
-const CACHE = PREFIX + 'dd26f80456a2';
+const CACHE = PREFIX + '568a32ff89ac';
 const ASSETS = [
   './',
   './index.html',
