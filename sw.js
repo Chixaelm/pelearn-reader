@@ -2,7 +2,7 @@
 // The version placeholder below is replaced at build time with a hash of the page, so every deploy
 // installs a fresh worker and clears the previous cache.
 const PREFIX = 'pelearn-reader-pe-';
-const CACHE = PREFIX + 'e97bcb12c842';
+const CACHE = PREFIX + 'a15c88ccaca7';
 const ASSETS = [
   './',
   './index.html',
