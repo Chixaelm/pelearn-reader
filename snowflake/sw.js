@@ -2,7 +2,7 @@
 // The version placeholder below is replaced at build time with a hash of the page, so every deploy
 // installs a fresh worker and clears the previous cache.
 const PREFIX = 'pelearn-reader-snowflake-';
-const CACHE = PREFIX + 'e12d59a15c82';
+const CACHE = PREFIX + '83420d273966';
 const ASSETS = [
   './',
   './index.html',
